@@ -9,21 +9,32 @@ export default class PostListItem extends Component {
             important: props.important,
             like: false
         };
-        this.onImportant = this.onImportant.bind(this);
-        this.onLike = this.onLike.bind(this);
+        // this.onImportant = this.onImportant.bind(this);
+        // this.onLike = this.onLike.bind(this);
+        this.onLike = () => {
+            this.setState(({like}) => ({
+                like: !like
+            }))
+        }
+        this.onImportant = () => {
+            this.setState(({important}) => ({
+                important: !important
+            }))
+        }
+
     }
 
-    onImportant () {
+    /*onImportant () {
         this.setState(({important}) => ({
             important: !important
         }))
-    }
+    }*/
 
-    onLike () {
+    /*onLike = () => {
         this.setState(({like}) => ({
             like: !like
         }))
-    }
+    }*/
     render () {
         const {label} = this.props
         const {important, like} = this.state;
