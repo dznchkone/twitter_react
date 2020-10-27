@@ -13,14 +13,20 @@ export default class App  extends Component {
         super(props);
         this.state = {
             data : [
-                {label : "React", important: true, id: 1},
-                {label : "Going to learn React", important: true, id: 2},
-                {label : "That is so good", important: false, id: 3},
-                {label : "I need a break...", important: false, id: 4}
+                {label : "React", important: true, id: 'qweasdzx'},
+                {label : "Going to learn React", important: true, id: 'rtyfghvb'},
+                {label : "That is so good", important: false, id: 'uiojklnm'},
+                {label : "I need a break...", important: false, id: 'qazwsxed'}
             ]
         }
 
-        this.maxId = 5
+        this.generateId = () => {
+            let id = ''
+            for (let i = 0; i < 8; i++) {
+                id +=String.fromCharCode(Math.floor(Math.random()*25 +97))
+            }
+            return id;
+        }
 
         this.deleteItem = (id) =>{
             this.setState(({data})=>{
@@ -36,8 +42,9 @@ export default class App  extends Component {
             const newItem = {
                 label: body,
                 important: false,
-                id: this.maxId++
+                id: this.generateId()
             };
+            console.log(newItem);
             this.setState(({data})=>{
                const newArr = [...data, newItem];
                return {
@@ -47,8 +54,6 @@ export default class App  extends Component {
         }
 
     }
-
-
 
     render() {
         return (
