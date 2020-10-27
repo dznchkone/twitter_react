@@ -5,13 +5,14 @@ import {ListGroup, ListGroupItem} from 'reactstrap';
 
 import './post-list.css';
 
-const PostList = ({posts}) => {
+const PostList = ({posts, onDelete}) => {
     let elements = posts.filter(item => typeof item === 'object' && Object.entries(item).length !== 0)
                         .map((item) => {
                              const {id, ...itemProps} = item;
                             return (
                                 <ListGroupItem key={id}>
-                                    <PostListItem {...itemProps}/>
+                                    <PostListItem {...itemProps}
+                                    onDelete={() => onDelete(id)}/>
                                 </ListGroupItem>
                             )
                         });
