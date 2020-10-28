@@ -20,39 +20,44 @@ export default class App  extends Component {
             ]
         }
 
-        this.generateId = () => {
-            let id = ''
-            for (let i = 0; i < 8; i++) {
-                id +=String.fromCharCode(Math.floor(Math.random()*25 +97))
+        this.generateId = this.generateId.bind(this);
+        this.deleteItem = this.deleteItem.bind(this);
+        this.addItem = this.addItem.bind(this);
+
+    }
+
+    generateId() {
+        let id = ''
+        for (let i = 0; i < 8; i++) {
+            id += String.fromCharCode(Math.floor(Math.random() * 25 + 97))
+        }
+        return id;
+    }
+
+    deleteItem (id) {
+        this.setState(({data})=>{
+            const index = data.findIndex(elem => elem.id === id);
+            const newArr = [...data.slice(0,index), ...data.slice(index+1)];
+            return {
+                data: newArr
             }
-            return id;
-        }
+        });
+    }
 
-        this.deleteItem = (id) =>{
-            this.setState(({data})=>{
-                const index = data.findIndex(elem => elem.id === id);
-                const newArr = [...data.slice(0,index), ...data.slice(index+1)];
-                return {
-                    data: newArr
-                }
-            });
-        }
-
-        this.addItem = (body) => {
-            const newItem = {
+    addItem (body) {
+        const newItem = {
                 label: body,
                 important: false,
                 id: this.generateId()
-            };
-            console.log(newItem);
-            this.setState(({data})=>{
-               const newArr = [...data, newItem];
-               return {
-                   data: newArr
-               }
-            });
-        }
+            }
 
+
+        this.setState(({data})=>{
+            const newArr = [...data, newItem];
+            return {
+                data: newArr
+            }
+        });
     }
 
     render() {
