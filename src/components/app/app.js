@@ -8,31 +8,20 @@ import PostAddForm from "../post-add-form";
 
 import './app.css';
 
-export default class App  extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            data : [
-                {label : "Going to learn React", important: true, like: false, id: 'rtyfghvb'},
-                {label : "That is so good", important: false,like: false, id: 'uiojklnm'},
-                {label : "I need a break...", important: false, like: false, id: 'qazwsxed'}
-            ],
-            term:'',
-            filter: 'all'
-        }
+export default class App extends Component {
 
-        //TODO переделать на новый синтаксис class fields
-        this.generateId = this.generateId.bind(this);
-        this.deleteItem = this.deleteItem.bind(this);
-        this.addItem = this.addItem.bind(this);
-        this.onToggleImportant = this.onToggleImportant.bind(this);
-        this.onToggleLiked = this.onToggleLiked.bind(this);
-        this.onUpdateSearch = this.onUpdateSearch.bind(this);
-        this.onFilterSelect = this.onFilterSelect.bind(this);
-
+    state = {
+        data: [
+            {label: "Going to learn React", important: true, like: false, id: 'rtyfghvb'},
+            {label: "That is so good", important: false, like: false, id: 'uiojklnm'},
+            {label: "I need a break...", important: false, like: false, id: 'qazwsxed'}
+        ],
+        term: '',
+        filter: 'all'
     }
 
-    generateId() {
+
+    generateId = () => {
         let id = ''
         for (let i = 0; i < 8; i++) {
             id += String.fromCharCode(Math.floor(Math.random() * 25 + 97))
@@ -40,25 +29,25 @@ export default class App  extends Component {
         return id;
     }
 
-    deleteItem (id) {
-        this.setState(({data})=>{
+    deleteItem = (id) => {
+        this.setState(({data}) => {
             const index = data.findIndex(elem => elem.id === id);
-            const newArr = [...data.slice(0,index), ...data.slice(index+1)];
+            const newArr = [...data.slice(0, index), ...data.slice(index + 1)];
             return {
                 data: newArr
             }
         });
     }
 
-    addItem (body) {
+    addItem = (body) => {
         const newItem = {
-                label: body,
-                important: false,
-                id: this.generateId()
-            }
+            label: body,
+            important: false,
+            id: this.generateId()
+        }
 
 
-        this.setState(({data})=>{
+        this.setState(({data}) => {
             const newArr = [...data, newItem];
             return {
                 data: newArr
@@ -66,15 +55,15 @@ export default class App  extends Component {
         });
     }
 
-    toggleProperty (objArray, id, property) {
+    toggleProperty = (objArray, id, property) => {
         const index = objArray.findIndex(elem => elem.id === id);
         const old = objArray[index];
-        const newItem = {...old, [property]:!old[property]};
+        const newItem = {...old, [property]: !old[property]};
         return [...objArray.slice(0, index), newItem, ...objArray.slice(index + 1)];
     }
 
-    onToggleImportant(id) {
-        this.setState(({data})=>{
+    onToggleImportant = (id) => {
+        this.setState(({data}) => {
             const newArr = this.toggleProperty(data, id, 'important');
             return {
                 data: newArr
@@ -83,17 +72,17 @@ export default class App  extends Component {
     }
 
 
-    onToggleLiked(id) {
-        this.setState(({data})=>{
-            const newArr = this.toggleProperty(data,id,'like')
+    onToggleLiked = (id) => {
+        this.setState(({data}) => {
+            const newArr = this.toggleProperty(data, id, 'like')
             return {
                 data: newArr
             }
         });
     }
 
-    searchPost(items, term){
-        if (term.length===0) {
+    searchPost = (items, term) => {
+        if (term.length === 0) {
             return items;
         }
 
@@ -102,11 +91,11 @@ export default class App  extends Component {
         })
     }
 
-    onUpdateSearch(term){
+    onUpdateSearch = (term) => {
         this.setState({term})
     }
 
-    filterPost(items, filter){
+    filterPost = (items, filter) => {
         if (filter === 'like') {
             return items.filter(item => item.like);
         } else {
@@ -114,7 +103,7 @@ export default class App  extends Component {
         }
     }
 
-    onFilterSelect(filter){
+    onFilterSelect = (filter) => {
         this.setState({filter})
     }
 
@@ -123,7 +112,7 @@ export default class App  extends Component {
         const liked = data.filter(item => item.like).length;
         const allPosts = data.length;
 
-        const  visiblePosts = this.filterPost(this.searchPost(data, term), filter);
+        const visiblePosts = this.filterPost(this.searchPost(data, term), filter);
 
         return (
             <div className="app">
@@ -132,14 +121,15 @@ export default class App  extends Component {
                     <SearchPanel
                         onUpdateSearch={this.onUpdateSearch}/>
                     <PostStatusFilter filter={filter}
-                        onFilterSelect={this.onFilterSelect}/>
+                                      onFilterSelect={this.onFilterSelect}/>
                 </div>
                 <PostList posts={visiblePosts}
-                    onDelete={this.deleteItem}
-                    onToggleImportant={this.onToggleImportant}
-                    onToggleLiked={this.onToggleLiked}/>
+                          onDelete={this.deleteItem}
+                          onToggleImportant={this.onToggleImportant}
+                          onToggleLiked={this.onToggleLiked}/>
                 <PostAddForm
-                onAdd={this.addItem}/>
+                    onAdd={this.addItem}/>
             </div>
-        )}
+        )
+    }
 }
